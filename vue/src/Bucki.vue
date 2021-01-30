@@ -13,7 +13,7 @@
           <template #legend>
             {{ check.name }}
           </template>
-          off <InputSwitch v-model="check.checked" @click="toggleHealth(check.name)" /> on
+          down <InputSwitch v-model="check.checked" @click="toggleHealth(check.name)" /> up
         </Fieldset>
       </div>
     </div>
@@ -25,7 +25,7 @@
           <template #legend>
             {{ check.name }}
           </template>
-          off <InputSwitch v-model="check.checked" @click="toggleHealth(check.name)" /> on
+          down <InputSwitch v-model="check.checked" @click="toggleHealth(check.name)" /> up
 
           <div v-for="(value, name) in check.data" v-bind:key="name" class="datafield">
             <span class="datalabel"
@@ -114,14 +114,14 @@ export default {
   methods: {
     getHealth() {
       this.axios
-        .get("/q/health")
+        .get("q/health")
         .then((resp) => {
           this.checks = this.updateChecks(resp.data.checks);
         })
         .catch((error) => (this.checks = this.updateChecks(error.response.data.checks)));
     },
     toggleHealth(checkName) {
-      this.axios.get("/bucki/change/" + checkName).then((resp) => console.log(resp.data));
+      this.axios.get("bucki/change/" + checkName).then((resp) => console.log(resp.data));
     },
     notOne(data) {
       let one = false;
@@ -139,7 +139,7 @@ export default {
     },
     addData(data, value, check) {
       this.axios
-        .get("/bucki/changeData/" + check + "/" + data + "/" + value)
+        .get("bucki/changeData/" + check + "/" + data + "/" + value)
         .then((resp) => {
           if (resp.data == "change done") {
               this.getHealth();
@@ -148,7 +148,7 @@ export default {
     },
     deleteData(dataName, check) {
       this.axios
-        .get("/bucki/deleteData/" + check + "/" + dataName)
+        .get("bucki/deleteData/" + check + "/" + dataName)
         .then((resp) => {
           if (resp.data == "change done") {
               this.getHealth();
