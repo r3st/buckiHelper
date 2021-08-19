@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import axios from 'axios';
 
-import 'primevue/resources/themes/md-light-indigo/theme.css';
+import 'primevue/resources/themes/mdc-dark-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 
