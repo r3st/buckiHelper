@@ -3,11 +3,11 @@ package de.bucki;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
-import org.eclipse.microprofile.health.Readiness;
+import org.eclipse.microprofile.health.Liveness;
 
 import javax.enterprise.context.ApplicationScoped;
 
-@Readiness
+@Liveness
 @ApplicationScoped  
 public class AliveHealthCheck implements HealthCheck {
     private static boolean up = true;
