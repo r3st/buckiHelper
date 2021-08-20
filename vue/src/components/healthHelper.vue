@@ -211,6 +211,7 @@ body {
 .togglecard{
   margin: 1rem;
   min-height: 32rem;
+  min-width: 30rem;
   float: left;
   overflow: auto;
 }
