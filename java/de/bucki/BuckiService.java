@@ -1,6 +1,8 @@
 package de.bucki;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import de.bucki.AliveHealthCheck;
 import de.bucki.DBHealthCheck;
 import de.bucki.KafkaHealthCheck;
@@ -10,6 +12,16 @@ import de.bucki.AppPartZHealthCheck;
 
 @ApplicationScoped
 public class BuckiService {
+   public String getHostname() {
+      String hostname;
+      try {
+         hostname = InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException e) {
+         hostname = "unknown";
+         e.printStackTrace();
+      }
+      return hostname;
+   }
     
     public String changeCheck(String name) {
         String changed="change done";
@@ -35,9 +47,8 @@ public class BuckiService {
             default:
                changed="change failed";
                break;
-        }
-                
-        return changed;
+      }
+      return changed;
     }
 
     public String changeCheckData(String name, String dataKey, String dataValue) {

@@ -21,6 +21,14 @@ public class BuckiHelper {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Path("/hostname")
+    public String getHostname() {
+        BuckiService bs = new BuckiService();
+        return bs.getHostname();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
     @Path("/changeData/{name}/{key}/{value}")
     public String changeCheckData(@PathParam String name, @PathParam String key, @PathParam String value) {
         BuckiService bs = new BuckiService();
