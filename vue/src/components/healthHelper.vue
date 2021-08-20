@@ -17,9 +17,9 @@
         </div>
       </template>
     </Card>
-    <Card v-if="checksWithData.length > 0" class="togglecard" style="max-width: 80rem">
+    <Card v-if="checksWithData.length > 0" class="togglecard" style="max-width: 85rem">
       <template #header>
-       <h3>healthchecks with data (uri: {{ uri }})</h3>
+        <h3>healthchecks with data (uri: {{ uri }})</h3>
       </template>
       <template #content>
         <div v-for="check in checksWithData" :key="check.id" class="check">
@@ -112,14 +112,7 @@ export default {
     };
   },
   created() {
-    this.menuItems = [
-          {
-            label:'reload',
-            icon:'pi pi-fw pi-refresh',
-            command: () => this.getHealth()
-          }
-        ];
-        this.getHealth();    
+    this.getHealth();    
   },
   methods: {
     getHealth() {
@@ -136,9 +129,15 @@ export default {
         
     },
     toggleHealth(checkName) {
-      this.axios.get("bucki/change/" + checkName).then((resp) => console.log(resp.data));
+      this.axios.get("bucki/change/" + checkName).then((resp) => {
+        console.log(resp.data);
+        this.$emit("updateHealthHelper");
+        }
+      );
     },
     splitChecks() {
+      this.checksWithData = [];
+      this.checksWithoutData = [];
       this.checks.forEach((check) => {
           if (this.hasData(check) === true) {
               this.checksWithData.push(check);
@@ -146,15 +145,13 @@ export default {
               this.checksWithoutData.push(check);
           }
       });
-      console.log(this.checksWithData);
-      console.log(this.checksWithoutData);
     },
     notOne(data) {
       let one = false;
-       if (Object.keys(data).length == 1) {
-         one = true;
-       }
-       return one;
+      if (Object.keys(data).length == 1) {
+        one = true;
+      }
+      return one;
     },
     hasData(check) {
       let dataExist = false;
@@ -169,6 +166,7 @@ export default {
         .then((resp) => {
           if (resp.data == "change done") {
               this.getHealth();
+              this.$emit("updateHealthHelper");
           }
         });
     },
@@ -178,6 +176,7 @@ export default {
         .then((resp) => {
           if (resp.data == "change done") {
               this.getHealth();
+              this.$emit("updateHealthHelper");
           }
         });
     },
@@ -207,12 +206,11 @@ body {
 .check fieldset.p-fieldset.p-component {
   min-width: 18rem;
   min-height: 5rem;
-  max-height: 21rem;
-  overflow: auto;
+  max-height: 24rem;
 }
 .togglecard{
   margin: 1rem;
-  height: 32rem;
+  min-height: 32rem;
   float: left;
   overflow: auto;
 }
@@ -224,6 +222,8 @@ body {
 }
 .databig .p-fieldset-content {
   min-width: 24rem;
+  max-height: 19rem;
+  overflow: auto;
 }
 .datafield {
   margin-top: 0.75rem;

@@ -4,16 +4,19 @@
       <template #start>
         <img alt="logo" src="images/logo.png" height="40">
       </template>
+      <template #end>
+        <p>Hostname: {{ hostname }}</p>
+      </template>
     </Menubar>
     <TabView>
       <TabPanel header="q/health">
-        <HealthHelper uri="q/health"/>
+        <HealthHelper ref="health" uri="q/health" @updateHealthHelper="updateHealthHelper()"/>
       </TabPanel>
       <TabPanel header="q/health/ready">
-        <HealthHelper uri="q/health/ready"/>
+        <HealthHelper ref="healthReady" uri="q/health/ready" @updateHealthHelper="updateHealthHelper()"/>
       </TabPanel>
       <TabPanel header="q/health/live">
-        <HealthHelper uri="q/health/live"/>
+        <HealthHelper ref="healthLive" uri="q/health/live" @updateHealthHelper="updateHealthHelper()"/>
       </TabPanel>
     </TabView>   
   </div>
@@ -38,9 +41,11 @@ export default {
   },
   setup() {
     const menuItems = ref ([]);
+    const hostname = ref (String);
 
     return {
       menuItems,
+      hostname,
     };
   },
   created() {
@@ -48,9 +53,23 @@ export default {
           {
             label:'reload',
             icon:'pi pi-fw pi-refresh',
-            //command: () => this.getHealth()
+            command: () => this.updateHealthHelper()
           }
-        ];  
+        ];
+    this.getHostname();
+  },
+  methods: {
+    updateHealthHelper() {
+      this.$refs.health.getHealth();
+      this.$refs.healthReady.getHealth();
+      this.$refs.healthLive.getHealth();
+      },
+    getHostname() {
+      this.axios.get("bucki/hostname").then((resp) => {
+        this.hostname = resp.data;
+        }
+      );
+    }
   }
 };
 </script>
